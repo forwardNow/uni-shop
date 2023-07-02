@@ -25,16 +25,15 @@
         
         <view class="floor-img-box">
           
-          <view class="floor-left-img-box">
+          <navigator class="floor-left-img-box" :url="getGoodsListPageUrl(floor.product_list[0])">
             <image class="floor-left-img" :src="floor.product_list[0].image_src" :style="{ width: `${floor.product_list[0].image_width}rpx` }" mode="widthFix"></image>
-          </view>
+          </navigator>
           
           <view class="floor-right-img-box">
             
-            <image 
-              class="floor-right-img"
-              v-for="(product, productIndex) in floor.product_list.slice(1)" :key="productIndex"
-              :src="product.image_src" :style="{ width: `${product.image_width}rpx` }" mode="widthFix"></image>
+            <navigator v-for="(product, productIndex) in floor.product_list.slice(1)" :key="productIndex" :url="getGoodsListPageUrl(product)">
+              <image class="floor-right-img" :src="product.image_src" :style="{ width: `${product.image_width}rpx` }" mode="widthFix"></image>
+            </navigator>
             
           </view>
           
@@ -107,7 +106,17 @@
         }
         
         
-      }
+      },
+      
+      getGoodsListPageUrl(product) {
+        // /pages/goods_list?query=服饰
+        const { navigator_url } = product;
+        
+        // query=服饰
+        const queryString = navigator_url.substr(navigator_url.indexOf('?') + 1);
+        
+        return `/subpkg/goods_list/goods_list?${queryString}`
+      },
     },
   }
 </script>

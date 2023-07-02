@@ -24,7 +24,12 @@
     
     methods: {
       async getSwiperList() {
-        const { message: swiperList } = await uni.$http.get('/home/swiperdata');
+        const { message: swiperList, meta: { status, msg } } = await uni.$http.get('/home/swiperdata');
+        
+        if (status !== 200) {
+          uni.$showToast('数据请求失败');
+          return;
+        }
         
         this.swiperList = swiperList;
       },

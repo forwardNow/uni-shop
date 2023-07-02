@@ -1,7 +1,7 @@
 import uniAjax from 'uni-ajax'
 
 const config = {
-  baseURL: 'https://api-hmugo-web.itheima.net/api/public/v1'
+  baseURL: 'https://api-hmugo-web.itheima.net'
 };
 
 const http = uniAjax.create(config);

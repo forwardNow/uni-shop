@@ -1,5 +1,6 @@
 <template>
-  <view>
+  <view class="home-page">
+    <!-- 轮播图 -->
     <swiper class="swiper" :indicator-dots="true" :autoplay="true" :interval="3000" :duration="1000" :circular="true">
       <swiper-item v-for="(item, index) in swiperList" :key="index">
         <navigator class="swiper-item" :url="`/subpkg/goods_detail/goods_detail?goods_id=${item.goods_id}`">
@@ -8,14 +9,42 @@
       </swiper-item>
     </swiper>
     
+    <!-- 导航 -->
     <view class="nav-list">
       <view class="nav-item" v-for="(item, index) in navList" :key="index" @click="handleClickNavItem(navItem)">
         <image class="nav-img" :src="item.image_src"></image>
       </view>
     </view>
     
+    <!-- 楼层 -->
+    <view class="floor-list">
+      
+      <view class="floor-item" v-for="(floor, floorIndex) in floorList" :key="floorIndex">
+        
+        <image class="floor-title" :src="floor.floor_title.image_src" mode="heightFix"></image>
+        
+        <view class="floor-img-box">
+          
+          <view class="floor-left-img-box">
+            <image class="floor-left-img" :src="floor.product_list[0].image_src" :style="{ width: `${floor.product_list[0].image_width}rpx` }" mode="widthFix"></image>
+          </view>
+          
+          <view class="floor-right-img-box">
+            
+            <image 
+              class="floor-right-img"
+              v-for="(product, productIndex) in floor.product_list.slice(1)" :key="productIndex"
+              :src="product.image_src" :style="{ width: `${product.image_width}rpx` }" mode="widthFix"></image>
+            
+          </view>
+          
+        </view>
+        
+      </view>
+      
+    </view>
+    
   </view>
-  
 </template>
 
 <script>
@@ -23,12 +52,14 @@
     onLoad() {
       this.getSwiperList();
       this.getNavList();
+      this.getFloorList();
     },
     
     data() {
       return {
         swiperList: [],
         navList: [],
+        floorList: [],
       };
     },
     
@@ -55,6 +86,17 @@
         this.navList = list;
       },
       
+      async getFloorList() {
+        const { message: list, meta: { status, msg } } = await uni.$http.get('/api/public/v1/home/floordata');
+        
+        if (status !== 200) {
+          uni.$showToast('数据请求失败');
+          return;
+        }
+        
+        this.floorList = list;
+      },
+      
       handleClickNavItem(navItem) {
         const { name, open_type, navigator_url } = navItem;
         
@@ -71,6 +113,12 @@
 </script>
 
 <style lang="scss">
+.home-page {
+  image {
+    display: block;
+  }
+}
+
 .swiper {
   height: 330rpx;
   
@@ -78,7 +126,6 @@
     height: 100%;
     
     image {
-      display: block;
       width: 100%;
       height: 100%;
     }
@@ -92,12 +139,41 @@
   
   margin: 32rpx 0;
   
-  .nav-item {
-    
-  }
   .nav-img {
     width: 128rpx;
     height: 140rpx;
+  }
+}
+
+
+.floor-list {
+  
+  .floor-item {
+    margin-bottom: 48rpx;
+  }
+  
+  .floor-title {
+    width: 100%;
+    height: 60rpx;
+  }
+  
+  .floor-img-box {
+    display: flex;
+  }
+  
+  .floor-left-img-box {
+    padding-left: 16rpx;
+  }
+  .floor-left-img {
+    
+  }
+  .floor-right-img-box {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-around;
+  }
+  .floor-right-img {
+    
   }
 }
 </style>

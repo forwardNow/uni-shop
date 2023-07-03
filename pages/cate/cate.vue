@@ -16,13 +16,13 @@
         </template>
       </scroll-view>
       
-      <scroll-view scroll-y class="right-scroll-view" :style="{ height: `${windowHeight}px` }">
+      <scroll-view scroll-y class="right-scroll-view" :style="{ height: `${windowHeight}px` }" :scroll-top="rightScrollTop">
         <view class="cate-level2-item" v-for="(cateLevel2Item, index) in cateLevel2List" :key="index">
           
           <view class="cate-level2-title"> / {{ cateLevel2Item.cat_name }} / </view>
           
           <view class="cate-level3-list">
-            <view class="cate-level3-item" v-for="(cateLevel3Item, level3Index) in cateLevel2Item.children" :key="level3Index">
+            <view class="cate-level3-item" v-for="(cateLevel3Item, level3Index) in cateLevel2Item.children" :key="level3Index" @click="handleClickCateLevel3Item(cateLevel3Item)">
               <image :src="cateLevel3Item.cat_icon"></image>
               <text>{{ cateLevel3Item.cat_name }}</text>
             </view>
@@ -49,6 +49,7 @@
         active: 0,
         cateList: [],
         cateLevel2List: [],
+        rightScrollTop: 0,
       }
     },
     methods: {
@@ -78,10 +79,23 @@
       updateCateLevel1ActiveIndex(index) {
         this.active = index;
         this.updateCateLevel2List(index);
+        this.resetRightScrollTop();
       },
       
       updateCateLevel2List(cateLevel1Index) {
         this.cateLevel2List = this.cateList[cateLevel1Index].children;
+      },
+      
+      resetRightScrollTop() {
+        this.rightScrollTop = this.rightScrollTop ? 0 : 1;
+      },
+      
+      handleClickCateLevel3Item(cateLevel3Item) {
+        const { cat_id } = cateLevel3Item;
+        
+        const url = `/subpkg/goods_list/goods_list?cid=${cat_id}`;
+        
+        uni.navigateTo({ url });
       },
       
     }

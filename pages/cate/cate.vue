@@ -1,6 +1,6 @@
 <template>
   <view>
-    <my-search></my-search>
+    <my-search @click="handleClickSearch"></my-search>
     
     <view class="scroll-view-box">
       
@@ -100,6 +100,9 @@
         uni.navigateTo({ url });
       },
       
+      handleClickSearch() {
+        console.log('handleClickSearch');
+      },
     }
   }
 </script>

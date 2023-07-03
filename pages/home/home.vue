@@ -1,5 +1,10 @@
 <template>
   <view class="home-page">
+    <!-- 搜索 -->
+    <view class="search-box">
+      <my-search @click="handleClickSearch"></my-search>
+    </view>
+    
     <!-- 轮播图 -->
     <swiper class="swiper" :indicator-dots="true" :autoplay="true" :interval="3000" :duration="1000" :circular="true">
       <swiper-item v-for="(item, index) in swiperList" :key="index">
@@ -117,6 +122,12 @@
         
         return `/subpkg/goods_list/goods_list?${queryString}`
       },
+      
+      handleClickSearch() {
+        uni.navigateTo({
+          url: '/subpkg/search/search',
+        })
+      },
     },
   }
 </script>
@@ -184,5 +195,12 @@
   .floor-right-img {
     
   }
+  
+}
+
+.search-box {
+  z-index: 999;
+  position: sticky;
+  top: 0;
 }
 </style>

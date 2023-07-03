@@ -101,7 +101,9 @@
       },
       
       handleClickSearch() {
-        console.log('handleClickSearch');
+        uni.navigateTo({
+          url: '/subpkg/search/search'
+        })
       },
     }
   }

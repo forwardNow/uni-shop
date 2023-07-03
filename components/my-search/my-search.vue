@@ -1,5 +1,5 @@
 <template>
-  <view class="my-search">
+  <view class="my-search" @click="handleClick">
     
     <view class="my-search-box">
       <uni-icons type="search" size="17"></uni-icons>
@@ -12,11 +12,29 @@
 <script>
   export default {
     name:"my-search",
+    
+    props: {
+      bgcolor: {
+        type: String,
+        default: '#c00000',
+      },
+      radius: {
+        type: Number,
+        default: 15,
+      },
+    },
+    
     data() {
       return {
         
       };
-    }
+    },
+    
+    methods: {
+      handleClick() {
+        this.$emit('click');
+      },
+    },
   }
 </script>
 

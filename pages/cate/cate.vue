@@ -1,8 +1,10 @@
 <template>
   <view>
+    <my-search></my-search>
+    
     <view class="scroll-view-box">
       
-      <scroll-view scroll-y class="left-scroll-view" :style="{ height: `${windowHeight}px` }">
+      <scroll-view scroll-y class="left-scroll-view" :style="{ height: `${scrollViewHeight}px` }">
 
         <template v-for="(cateLevel1Item, index) in cateList">
           <view 
@@ -16,7 +18,7 @@
         </template>
       </scroll-view>
       
-      <scroll-view scroll-y class="right-scroll-view" :style="{ height: `${windowHeight}px` }" :scroll-top="rightScrollTop">
+      <scroll-view scroll-y class="right-scroll-view" :style="{ height: `${scrollViewHeight}px` }" :scroll-top="rightScrollTop">
         <view class="cate-level2-item" v-for="(cateLevel2Item, index) in cateLevel2List" :key="index">
           
           <view class="cate-level2-title"> / {{ cateLevel2Item.cat_name }} / </view>
@@ -45,7 +47,7 @@
     
     data() {
       return {
-        windowHeight: 0,
+        scrollViewHeight: 0,
         active: 0,
         cateList: [],
         cateLevel2List: [],
@@ -56,7 +58,7 @@
       getWindowHeight() {
         // 减去 导航条 和 tabBar 后的高度
         const { windowHeight } = uni.getSystemInfoSync();
-        this.windowHeight = windowHeight;
+        this.scrollViewHeight = windowHeight - 50;
       },
       
       async getCateList() {

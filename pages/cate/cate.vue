@@ -4,20 +4,32 @@
       
       <scroll-view scroll-y class="left-scroll-view" :style="{ height: `${windowHeight}px` }">
 
-        <template v-for="(item, index) in cateList">
+        <template v-for="(cateLevel1Item, index) in cateList">
           <view 
-            class="scroll-view-item" 
+            class="cate-level1-item" 
             :class="{ active: active === index }"
             :key="index" 
             @click="handleClickLeftScrollViewItem(index)"
           >
-            {{ item.cat_name }}
+            {{ cateLevel1Item.cat_name }}
           </view>
         </template>
       </scroll-view>
       
       <scroll-view scroll-y class="right-scroll-view" :style="{ height: `${windowHeight}px` }">
-        <view class="scroll-view-item" v-for="i in 100">yyyyy</view>
+        <view class="cate-level2-item" v-for="(cateLevel2Item, index) in cateLevel2List" :key="index">
+          
+          <view class="cate-level2-title"> / {{ cateLevel2Item.cat_name }} / </view>
+          
+          <view class="cate-level3-list">
+            <view class="cate-level3-item" v-for="(cateLevel3Item, level3Index) in cateLevel2Item.children" :key="level3Index">
+              <image :src="cateLevel3Item.cat_icon"></image>
+              <text>{{ cateLevel3Item.cat_name }}</text>
+            </view>
+          </view>
+          
+        </view>
+        
       </scroll-view>
       
     </view>
@@ -34,8 +46,9 @@
     data() {
       return {
         windowHeight: 0,
-        cateList: [],
         active: 0,
+        cateList: [],
+        cateLevel2List: [],
       }
     },
     methods: {
@@ -54,10 +67,21 @@
         }
         
         this.cateList = list;
+        
+        this.updateCateLevel1ActiveIndex(this.active);
       },
       
       handleClickLeftScrollViewItem(index) {
+        this.updateCateLevel1ActiveIndex(index);
+      },
+      
+      updateCateLevel1ActiveIndex(index) {
         this.active = index;
+        this.updateCateLevel2List(index);
+      },
+      
+      updateCateLevel2List(cateLevel1Index) {
+        this.cateLevel2List = this.cateList[cateLevel1Index].children;
       },
       
     }
@@ -71,7 +95,7 @@
   .left-scroll-view {
     width: 120px;
     
-    .scroll-view-item {
+    .cate-level1-item {
       line-height: 60px;
       background-color: #f7f7f7;
       text-align: center;
@@ -96,7 +120,39 @@
     }
   }
   .right-scroll-view {
+    font-size: 12px;
     
+  }
+  
+  .cate-level2-item {
+  }
+  
+  .cate-level2-title {
+    padding: 16px 0;
+    font-weight: bold;
+    text-align: center;
+  }
+  
+  .cate-level3-list {
+    display: flex;
+    flex-wrap: wrap;
+  }
+  .cate-level3-item {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    
+    margin-bottom: 12px;
+    width: 33.33%;
+    
+    image {
+      width: 60px;
+      height: 60px;
+    }
+    text {
+      
+    }
   }
 }
 </style>

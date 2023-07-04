@@ -47,9 +47,9 @@
         
         this.timer = setTimeout(() => {
           // console.log(value);
-          this.keyword = value;
+          this.keyword = value.trim();
           
-          if (!value) {
+          if (!this.keyword) {
             this.suggestList = [];
             return;
           }
@@ -79,6 +79,12 @@
       },
       
       saveKeywordToHistory() {
+        const index = this.historyList.indexOf(this.keyword);
+        
+        if (index !== -1) {
+          this.historyList.splice(index, 1);
+        }
+        
         this.historyList.unshift(this.keyword);
       },
       

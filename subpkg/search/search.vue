@@ -67,6 +67,8 @@
         }
         
         this.suggestList = goods;
+        
+        this.saveKeywordToHistory();
       },
       
       handleClickSugguestItem(item) {
@@ -74,6 +76,10 @@
         const url = `/subpkg/goods_detail/goods_detail?goods_id=${goods_id}`;
         
         uni.navigateTo({ url });
+      },
+      
+      saveKeywordToHistory() {
+        this.historyList.unshift(this.keyword);
       },
       
     }

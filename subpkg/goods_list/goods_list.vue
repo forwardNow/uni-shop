@@ -31,6 +31,22 @@
       this.getGoodsList();
     },
     
+    onReachBottom() {
+      if (this.isLoading) {
+        return;
+      }
+      
+      const { pagenum: currPageIndex, pagesize: pageSize } = this.requestParams;
+      
+      if (currPageIndex * pageSize >= this.total) {
+        return;
+      }
+      
+      this.requestParams.pagenum += 1;
+      
+      this.getGoodsList();
+    },
+    
     data() {
       return {
         requestParams: {
@@ -43,6 +59,8 @@
         goodsList: [],
         
         total: 0,
+        
+        isLoading: false,
       }
     },
     methods: {
@@ -54,7 +72,11 @@
       },
       
       async getGoodsList() {
+        this.isLoading = true;
+        
         const { message, meta: { status, msg } } = await uni.$http.get('/api/public/v1/goods/search', this.requestParams);
+        
+        this.isLoading = false;
         
         if (status !== 200) {
           uni.$showToast('数据请求失败');
@@ -63,9 +85,9 @@
         
         const { total, pagenum, goods } = message;
         
-        this.goodsList = goods;
+        this.goodsList = this.goodsList.concat(goods);
         this.total = total;
-        this.requestParams.pagenum = pagenum;
+        this.requestParams.pagenum = Number(pagenum);
       }
     }
   }
@@ -86,6 +108,7 @@
     display: block;
     width: 100px;
     height: 100px;
+    background-color: #efefef;
   }
   .goods-item-right {
     display: flex;

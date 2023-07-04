@@ -2,7 +2,7 @@
   <view>
     <view class="goods-list">
       <template v-for="(item, i) in goodsList">
-        <view class="goods-item" :key="i">
+        <view class="goods-item" :key="i" @click="handleClickGoodsItem(item)">
           
           <view class="goods-item-left">
             <image class="goods-img" :src="item.goods_small_logo"></image>
@@ -47,6 +47,15 @@
       this.getGoodsList();
     },
     
+    onPullDownRefresh() {
+      this.requestParams.pagenum = 1;
+      this.goodsList = [];
+      
+      this.getGoodsList().finally(() => {
+        uni.stopPullDownRefresh();
+      });
+    },
+    
     data() {
       return {
         requestParams: {
@@ -88,7 +97,14 @@
         this.goodsList = this.goodsList.concat(goods);
         this.total = total;
         this.requestParams.pagenum = Number(pagenum);
-      }
+      },
+      
+      handleClickGoodsItem(item) {
+        const { goods_id } = item;
+        const url = `/subpkg/goods_detail/goods_detail?goods_id=${goods_id}`;
+        
+        uni.navigateTo({ url });
+      },
     }
   }
 </script>

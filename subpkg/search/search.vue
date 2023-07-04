@@ -12,14 +12,14 @@
       />
     </view>
     
-    <view class="suggest-list">
+    <view class="suggest-list" v-if="suggestList.length > 0">
       <view class="suggest-item" v-for="(item, index) in suggestList" :key="index" @click="handleClickSugguestItem(item)">
         <view class="goods-name">{{item.goods_name}}</view>
         <uni-icons type="arrowright" size="16"></uni-icons>
       </view>
     </view>
     
-    <view class="history-box">
+    <view class="history-box" v-else>
       <view class="history-title">
         <text>搜索历史</text>
         <uni-icons type="trash"></uni-icons>
@@ -50,6 +50,7 @@
           this.keyword = value;
           
           if (!value) {
+            this.suggestList = [];
             return;
           }
           

@@ -13,9 +13,19 @@
     </view>
     
     <view class="suggest-list">
-      <view class="suggest-item" v-for="(item, index) in suggestList" :key="index">
+      <view class="suggest-item" v-for="(item, index) in suggestList" :key="index" @click="handleClickSugguestItem(item)">
         <view class="goods-name">{{item.goods_name}}</view>
         <uni-icons type="arrowright" size="16"></uni-icons>
+      </view>
+    </view>
+    
+    <view class="history-box">
+      <view class="history-title">
+        <text>搜索历史</text>
+        <uni-icons type="trash"></uni-icons>
+      </view>
+      <view class="history-list">
+        <uni-tag class="history-item" :text="item" type="error" inverted v-for="(item, i) in historyList" :key="i"></uni-tag>
       </view>
     </view>
     
@@ -28,6 +38,7 @@
       return {
         keyword: '',
         suggestList: [],
+        historyList: ['电视', '冰箱', '彩电'],
       }
     },
     methods: {
@@ -56,6 +67,14 @@
         
         this.suggestList = goods;
       },
+      
+      handleClickSugguestItem(item) {
+        const { goods_id } = item;
+        const url = `/subpkg/goods_detail/goods_detail?goods_id=${goods_id}`;
+        
+        uni.navigateTo({ url });
+      },
+      
     }
   }
 </script>
@@ -85,4 +104,29 @@
   overflow: hidden;
   text-overflow: ellipsis;
 }
+
+.history-box {
+  padding: 0 10px;
+  .history-title {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    height: 40px;
+    border-bottom: solid 1px #efefef;
+    
+    font-size: 14px;
+  }
+
+  .history-list {
+    display: flex;
+    flex-wrap: wrap;
+    
+    .history-item {
+      margin-top: 8px;
+      margin-right: 8px;;
+    }
+  }
+}
+
+
 </style>

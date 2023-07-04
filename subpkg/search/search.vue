@@ -22,10 +22,10 @@
     <view class="history-box" v-else>
       <view class="history-title">
         <text>搜索历史</text>
-        <uni-icons type="trash"></uni-icons>
+        <uni-icons type="trash" @click="handleClickCleanButton"></uni-icons>
       </view>
       <view class="history-list">
-        <uni-tag class="history-item" :text="item" type="error" inverted v-for="(item, i) in historyList" :key="i"></uni-tag>
+        <uni-tag class="history-item" :text="item" type="error" inverted v-for="(item, i) in historyList" :key="i" @click="handleClickHistoryItem(item)"></uni-tag>
       </view>
     </view>
     
@@ -99,6 +99,16 @@
         uni.setStorageSync('historyList', JSON.stringify(this.historyList));
       },
       
+      handleClickCleanButton() {
+        this.historyList = [];
+        uni.setStorageSync('historyList', JSON.stringify(this.historyList));
+      },
+      
+      handleClickHistoryItem(item) {
+         const url = `/subpkg/goods_list/goods_list?query=${item}`;
+         
+         uni.navigateTo({ url });
+      },
     }
   }
 </script>

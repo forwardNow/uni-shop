@@ -34,11 +34,14 @@
 
 <script>
   export default {
+    onLoad() {
+      this.getHistoryList();
+    },
     data() {
       return {
         keyword: '',
         suggestList: [],
-        historyList: ['电视', '冰箱', '彩电'],
+        historyList: [],
       }
     },
     methods: {
@@ -78,6 +81,12 @@
         uni.navigateTo({ url });
       },
       
+      getHistoryList() {
+        const str = uni.getStorageSync('historyList') || '[]';
+        
+        this.historyList = JSON.parse(str);
+      },
+      
       saveKeywordToHistory() {
         const index = this.historyList.indexOf(this.keyword);
         
@@ -86,6 +95,8 @@
         }
         
         this.historyList.unshift(this.keyword);
+        
+        uni.setStorageSync('historyList', JSON.stringify(this.historyList));
       },
       
     }

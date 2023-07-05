@@ -1,5 +1,5 @@
 <template>
-  <view v-if="isLoaded">
+  <view v-if="isLoaded" class="goods-detail">
     <swiper class="swiper" :indicator-dots="true" :autoplay="false" :duration="500" :circular="true">
       <swiper-item class="swiper-item" v-for="(item, i) in goodsDetail.pics" :key="i" @click="preview(i)">
         <image class="swiper-image" :src="item.pics_big"></image>
@@ -22,6 +22,15 @@
     <!-- 商品详情信息 -->
     <rich-text :nodes="goodsDetail.goods_introduce"></rich-text>
     
+    <!-- 商品导航区域-->
+    <uni-goods-nav 
+      class="goods-nav"
+      :fill="true"  
+      :options="goodsNavConfig.options" 
+      :buttonGroup="goodsNavConfig.buttonGroup"  
+      @click="handleClickIcons" 
+      @buttonClick="handleClickButtons" 
+    />
   </view>
 </template>
 
@@ -36,6 +45,31 @@
       return {
         isLoaded: false,
         goodsDetail: {},
+        goodsNavConfig: {
+          options: [
+            {
+              icon: 'shop',
+              text: '店铺',
+            }, 
+            {
+              icon: 'cart',
+              text: '购物车',
+              info: 2
+            },
+          ],
+          buttonGroup: [
+            {
+              text: '加入购物车',
+              backgroundColor: '#ff0000',
+              color: '#fff'
+            },
+            {
+              text: '立即购买',
+              backgroundColor: '#ffa200',
+              color: '#fff'
+            }
+          ]
+        }
       }
     },
     methods: {
@@ -61,6 +95,19 @@
           current: i,
           urls,
         });
+      },
+      
+      handleClickIcons(e) {
+        // e: {"index":1,"content":{"icon":"cart","text":"购物车","info":2}}
+        if (e.index === 1) {
+          uni.switchTab({
+            url: '/pages/cart/cart'
+          })
+        }
+      },
+      
+      handleClickButtons(e) {
+        // e: {"index":0,"content":{"text":"加入购物车","backgroundColor":"#ff0000","color":"#fff"}}
       },
       
     }
@@ -113,5 +160,16 @@
     font-size: 12px;
     color: #666;
   }
+}
+
+.goods-detail {
+  padding-bottom: 50px;
+}
+.goods-nav {
+  z-index: 999;
+  position: fixed;
+  left: 0;
+  bottom: 0;
+  width: 100%;
 }
 </style>

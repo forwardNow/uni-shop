@@ -1,5 +1,5 @@
 <template>
-  <view>
+  <view v-if="isLoaded">
     <swiper class="swiper" :indicator-dots="true" :autoplay="false" :duration="500" :circular="true">
       <swiper-item class="swiper-item" v-for="(item, i) in goodsDetail.pics" :key="i" @click="preview(i)">
         <image class="swiper-image" :src="item.pics_big"></image>
@@ -18,6 +18,10 @@
       <view class="express">快递：免运费</view>
     </view>
     
+    
+    <!-- 商品详情信息 -->
+    <rich-text :nodes="goodsDetail.goods_introduce"></rich-text>
+    
   </view>
 </template>
 
@@ -30,6 +34,7 @@
     },
     data() {
       return {
+        isLoaded: false,
         goodsDetail: {},
       }
     },
@@ -42,7 +47,10 @@
           return;
         }
         
+        detail.goods_introduce = detail.goods_introduce.replace(/<img /gi, '<img style="display: block" ');
+        
         this.goodsDetail = detail;
+        this.isLoaded = true;
       },
       
       preview(i) {

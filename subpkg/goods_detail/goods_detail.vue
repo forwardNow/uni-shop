@@ -81,11 +81,14 @@
     },
     
     watch: {
-      total(newVal) {
-        const cartOption = this.goodsNavConfig.options.find((item) => item.text === '购物车');
-        
-        cartOption.info = newVal;
-      }
+      total: {
+        immediate: true,
+        handler(newVal) {
+          const cartOption = this.goodsNavConfig.options.find((item) => item.text === '购物车');
+          
+          cartOption.info = newVal;
+        }
+      },
     },
     
     methods: {

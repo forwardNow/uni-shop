@@ -34,6 +34,18 @@ const cart = {
       this.commit('cart/saveToStorage');
     },
     
+    updateGoodsState(state, { goods_id, goods_state }) {
+      const target = state.cart.find((item) => item.goods_id === goods_id);
+    
+      if (!target) {
+        return;
+      }
+      
+      target.goods_state = goods_state;
+      
+      this.commit('cart/saveToStorage');
+    },
+    
     saveToStorage(state) {
       uni.setStorageSync('cart', JSON.stringify(state.cart));
     },

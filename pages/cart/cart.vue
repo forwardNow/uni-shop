@@ -5,14 +5,14 @@
       <text class="cart-title-text">购物车</text>
     </view>
     
-    <template v-for="(goods, i) in cart" :key="i">
-      <my-goods :goods="goods" :radio="true"></my-goods>
+    <template v-for="(goods, i) in cart" >
+      <my-goods :goods="goods" :radio="true" @radio-change="handleRadioChange" :key="i"></my-goods>
     </template>
   </view>
 </template>
 
 <script>
-  import { mapState } from 'vuex'
+  import { mapState, mapMutations } from 'vuex'
   import tabbarBadge from '@/mixins/tabbar-badge';
 
   export default {
@@ -26,7 +26,11 @@
       ...mapState('cart', ['cart']),
     },
     methods: {
-
+      ...mapMutations('cart', ['updateGoodsState']),
+      
+      handleRadioChange(goods) {
+        this.updateGoodsState(goods);
+      },
     }
   }
 </script>

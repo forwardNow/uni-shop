@@ -6,7 +6,7 @@
     </view>
     
     <template v-for="(goods, i) in cart" >
-      <my-goods :goods="goods" :radio="true" @radio-change="handleRadioChange" :key="i"></my-goods>
+      <my-goods :goods="goods" :radio="true" :num-box="true" @radio-change="handleRadioChange" :key="i"></my-goods>
     </template>
   </view>
 </template>

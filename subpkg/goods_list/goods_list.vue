@@ -2,23 +2,8 @@
   <view>
     <view class="goods-list">
       <template v-for="(item, i) in goodsList">
-        <view class="goods-item" :key="i" @click="handleClickGoodsItem(item)">
-          
-          <view class="goods-item-left">
-            <image class="goods-img" :src="item.goods_small_logo"></image>
-          </view>
-          
-          <view class="goods-item-right">
-            
-            <view class="goods-name">{{ item.goods_name }}</view>
-            
-            <view class="goods-info-box">
-              <text class="goods-price">{{ item.goods_price ? `￥${item.goods_price}` : '' }}</text>
-            </view>
-            
-          </view>
-          
-        </view>
+        <my-goods :goods="item" @click="handleClickGoodsItem(item)" />
+        
       </template>
     </view>
   </view>
@@ -112,34 +97,6 @@
 <style lang="scss">
 .goods-list {
   
-  .goods-item {
-    display: flex;
-    padding: 12px 10px;
-    border-bottom: solid 1px #efefef;
-  }
-  .goods-item-left {
-    margin-right: 4px;
-  }
-  .goods-img {
-    display: block;
-    width: 100px;
-    height: 100px;
-    background-color: #efefef;
-  }
-  .goods-item-right {
-    display: flex;
-    flex-direction: column;
-    justify-content: space-between;
-  }
-  .goods-name {
-    font-size: 14px;
-  }
-  .goods-info-box {
-    
-  }
-  .goods-price {
-    font-size: 16px;
-    color: #c00000;
-  }
+  
 }
 </style>

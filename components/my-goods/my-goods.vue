@@ -12,6 +12,7 @@
 
       <view class="goods-info-box">
         <text class="goods-price">{{ goods.goods_price ? `￥${goods.goods_price}` : '' }}</text>
+        <uni-number-box v-if="numBox" :min="1" :value="goods.goods_count"></uni-number-box>
       </view>
 
     </view>
@@ -30,7 +31,11 @@
       radio: {
         type: Boolean,
         default: false,
-      }
+      },
+      numBox: {
+        type: Boolean,
+        default: false,
+      },
     },
     data() {
       return {
@@ -78,6 +83,8 @@
   }
 
   .goods-item-right {
+    flex: 1;
+    
     display: flex;
     flex-direction: column;
     justify-content: space-between;
@@ -87,7 +94,11 @@
     font-size: 14px;
   }
 
-  .goods-info-box {}
+  .goods-info-box {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+  }
 
   .goods-price {
     font-size: 16px;

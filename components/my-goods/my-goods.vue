@@ -12,7 +12,7 @@
 
       <view class="goods-info-box">
         <text class="goods-price">{{ goods.goods_price ? `￥${goods.goods_price}` : '' }}</text>
-        <uni-number-box v-if="numBox" :min="1" :value="goods.goods_count"></uni-number-box>
+        <uni-number-box v-if="numBox" :min="1" :value="goods.goods_count" @change="handleNumBoxChange"></uni-number-box>
       </view>
 
     </view>
@@ -55,6 +55,13 @@
           goods_state: !goods_state,
         };
         this.$emit('radio-change', data);
+      },
+      
+      handleNumBoxChange(num) {
+        this.$emit('num-change', {
+          goods_id: this.goods.goods_id,
+          goods_count: num,
+        });
       },
     }
   }

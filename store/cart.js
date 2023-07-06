@@ -1,8 +1,8 @@
-export default {
+const cart = {
   namespaced: true,
   
   state: {
-    cart: [],
+    cart: JSON.parse(uni.getStorageSync('cart') || '[]'),
   },
   
   getters: {
@@ -30,6 +30,14 @@ export default {
       state.cart.push(goods);
       
       console.log('state', state);
-    }
-  }
-}
+      
+      this.commit('cart/saveToStorage');
+    },
+    
+    saveToStorage(state) {
+      uni.setStorageSync('cart', JSON.stringify(state.cart));
+    },
+  },
+};
+
+export default cart;

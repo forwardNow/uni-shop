@@ -2,6 +2,7 @@
 import Vue from 'vue'
 import App from './App'
 import http from './commons/http/http'
+import store from './store/store.js'
 
 Vue.config.productionTip = false
 
@@ -14,6 +15,7 @@ uni.$showToast = (title = '', duration = 3000, icon = 'none') => {
 };
 
 const app = new Vue({
-    ...App
+    ...App,
+    store,
 })
 app.$mount()

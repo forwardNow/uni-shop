@@ -2,6 +2,7 @@
   <view class="goods-item" @click="handleClickGoodsItem(goods)">
 
     <view class="goods-item-left">
+      <radio v-if="radio" :checked="goods.goods_state" color="#C00000"></radio>
       <image class="goods-img" :src="goods.goods_small_logo"></image>
     </view>
 
@@ -26,6 +27,10 @@
         type: Object,
         default: {},
       },
+      radio: {
+        type: Boolean,
+        default: false,
+      }
     },
     data() {
       return {
@@ -48,6 +53,10 @@
   }
 
   .goods-item-left {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    
     margin-right: 4px;
   }
 

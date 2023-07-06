@@ -6,7 +6,7 @@
     </view>
     
     <template v-for="(goods, i) in cart" >
-      <my-goods :goods="goods" :radio="true" :num-box="true" @radio-change="handleRadioChange" :key="i"></my-goods>
+      <my-goods :goods="goods" :radio="true" :num-box="true" @radio-change="handleRadioChange" @num-change="handleNumChange" :key="i"></my-goods>
     </template>
   </view>
 </template>
@@ -26,12 +26,16 @@
       ...mapState('cart', ['cart']),
     },
     methods: {
-      ...mapMutations('cart', ['updateGoodsState']),
+      ...mapMutations('cart', ['updateGoodsState', 'updateGoodsCount']),
       
       handleRadioChange(goods) {
         this.updateGoodsState(goods);
       },
-    }
+      
+      handleNumChange({ goods_id, goods_count }) {
+        this.updateGoodsCount({ goods_id, goods_count });
+      },
+    },
   }
 </script>
 

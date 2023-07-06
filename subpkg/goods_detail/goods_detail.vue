@@ -35,7 +35,7 @@
 </template>
 
 <script>
-  import { mapState, mapMutations } from 'vuex';
+  import { mapState, mapGetters, mapMutations } from 'vuex';
   
   export default {
     onLoad(options) {
@@ -56,7 +56,7 @@
             {
               icon: 'cart',
               text: '购物车',
-              info: 2
+              info: 0
             },
           ],
           buttonGroup: [
@@ -77,6 +77,15 @@
     
     computed: {
       ...mapState('cart', ['cart']),
+      ...mapGetters('cart', ['total']),
+    },
+    
+    watch: {
+      total(newVal) {
+        const cartOption = this.goodsNavConfig.options.find((item) => item.text === '购物车');
+        
+        cartOption.info = newVal;
+      }
     },
     
     methods: {

@@ -2,7 +2,7 @@
   <view class="goods-item" @click="handleClickGoodsItem(goods)">
 
     <view class="goods-item-left">
-      <radio v-if="radio" :checked="goods.goods_state" color="#C00000"></radio>
+      <radio v-if="radio" :checked="goods.goods_state" color="#C00000" @click="handleClickRadio"></radio>
       <image class="goods-img" :src="goods.goods_small_logo"></image>
     </view>
 
@@ -40,7 +40,17 @@
     methods: {
       handleClickGoodsItem(goods) {
         this.$emit('click', goods);
-      }
+      },
+      
+      handleClickRadio() {
+        const { goods_id, goods_state } = this.goods;
+        
+        const data = {
+          goods_id,
+          goods_state: !goods_state,
+        };
+        this.$emit('radio-change', data);
+      },
     }
   }
 </script>

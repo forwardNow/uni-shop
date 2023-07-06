@@ -16,7 +16,7 @@
     
     <!-- 导航 -->
     <view class="nav-list">
-      <view class="nav-item" v-for="(item, index) in navList" :key="index" @click="handleClickNavItem(navItem)">
+      <view class="nav-item" v-for="(item, index) in navList" :key="index" @click="handleClickNavItem(item)">
         <image class="nav-img" :src="item.image_src"></image>
       </view>
     </view>
@@ -105,8 +105,8 @@
         const { name, open_type, navigator_url } = navItem;
         
         // 分类
-        if (open_type === 'switchTab' && navigator_url) {
-          uni.switchTab({ url: navigator_url });
+        if (name === '分类') {
+          uni.switchTab({ url: '/pages/cate/cate' });
           return;
         }
         

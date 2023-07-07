@@ -1,0 +1,88 @@
+<template>
+  <view>
+    <view v-if="!hasAddress" class="address-choose-box">
+      <button type="primary" size="mini" class="btnChooseAddress">请选择收货地址+</button>
+    </view>
+    
+    <view v-else class="address-info-box">
+      <view class="row">
+        <view class="row-left"> 
+          <view class="username">收货人：<text>escook</text></view> 
+        </view>
+        <view class="row-right phone-box"> 
+          <view class="phone">电话：<text>138XXXX5555</text></view>
+          <uni-icons type="arrowright" size="16"></uni-icons>
+        </view>
+      </view>
+      
+      <view class="row row2">
+        <view class="row-left address">收货地址：</view>
+        <view class="row-right">河北省邯郸市肥乡区xxx 河北省邯郸市肥乡区xxx 河北 省邯郸市肥乡区xxx 河北省邯郸市肥乡区xxx </view>
+      </view>
+      
+    </view>
+    
+    
+    <image src="/static/cart_border@2x.png" class="address-border"></image>
+  </view>
+</template>
+
+<script>
+  export default {
+    name:"my-address",
+    data() {
+      return {
+        address: {},
+      };
+    },
+    
+    computed: {
+      hasAddress() {
+        return Object.keys(this.address).length !== 0;
+      },
+    },
+  }
+</script>
+
+<style lang="scss">
+  .address-choose-box {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    
+    height: 90px;
+  }
+  .address-info-box {
+    padding: 0 10px;
+    height: 90px;
+    
+    font-size: 14px;
+    overflow: hidden;
+    
+    .row {
+      display: flex;
+      justify-content: space-between;
+    }
+    .row2 {
+      margin-top: 10px;
+    }
+    
+    .phone-box {
+      display: flex;
+      justify-content: space-between;
+    }
+    .phone {
+      margin-right: 10px;
+    }
+    .address {
+      white-space: nowrap;
+    }
+    
+  }
+  
+  .address-border {
+    display: block;
+    width: 100%;
+    height: 5px;
+  }
+</style>

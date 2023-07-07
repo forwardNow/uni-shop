@@ -1,7 +1,7 @@
 <template>
   <view>
     <view v-if="!hasAddress" class="address-choose-box">
-      <button type="primary" size="mini" class="btnChooseAddress">请选择收货地址+</button>
+      <button type="primary" size="mini" class="btnChooseAddress" @click="handleClickChooseButton">请选择收货地址+</button>
     </view>
     
     <view v-else class="address-info-box">
@@ -41,6 +41,44 @@
         return Object.keys(this.address).length !== 0;
       },
     },
+    
+    methods: {
+      async handleClickChooseButton() {
+        const [ error, result ] = await uni.chooseAddress().catch((e) => e);
+        
+        if (error) {
+          console.error(error);
+          return;
+        }
+        
+        const {
+          errMsg,         //  "chooseAddress:ok"
+          provinceName,   //  "广东省"
+          cityName,       //  "广州市"
+          countyName,     //  "海珠区"
+          detailInfo,     //  "新港中路397号"
+          nationalCode,   //  "510000"
+          postalCode,     //  "510000"
+          telNumber,      //  "020-81167888"
+          userName,       //  "张三"
+        } = result;
+        
+        if (errMsg !== "chooseAddress:ok") {
+          return;
+        }
+        
+        this.address = {
+          provinceName,
+          cityName,
+          countyName,
+          detailInfo,
+          postalCode,
+          telNumber,
+          userName,
+        };
+      },
+    },
+    
   }
 </script>
 
@@ -53,7 +91,7 @@
     height: 90px;
   }
   .address-info-box {
-    padding: 0 10px;
+    padding: 10px 10px 0 10px;
     height: 90px;
     
     font-size: 14px;

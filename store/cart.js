@@ -59,6 +59,18 @@ const cart = {
       this.commit('cart/saveToStorage');
     },
     
+    deleteGoods(state, { goods_id }) {
+      const targetIndex = state.cart.findIndex((item) => item.goods_id === goods_id);
+      
+      if (targetIndex === -1) {
+        return;
+      }
+      
+      state.cart.splice(targetIndex, 1);
+      
+      this.commit('cart/saveToStorage');
+    },
+    
     saveToStorage(state) {
       uni.setStorageSync('cart', JSON.stringify(state.cart));
     },

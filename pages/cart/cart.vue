@@ -5,9 +5,23 @@
       <text class="cart-title-text">购物车</text>
     </view>
     
-    <template v-for="(goods, i) in cart" >
-      <my-goods :goods="goods" :radio="true" :num-box="true" @radio-change="handleRadioChange" @num-change="handleNumChange" :key="i"></my-goods>
-    </template>
+    <uni-swipe-action ref="swipe">
+      <template v-for="(goods, i) in cart">
+        
+        <uni-swipe-action-item :right-options="swiperActionOptions" @click="handleClickSwipeButton(goods)">
+          <my-goods
+            :key="i"
+            :goods="goods" 
+            :radio="true" 
+            :num-box="true"
+            @radio-change="handleRadioChange" 
+            @num-change="handleNumChange" 
+          />
+        </uni-swipe-action-item>
+        
+      </template>
+    </uni-swipe-action>
+    
   </view>
 </template>
 
@@ -17,16 +31,28 @@
 
   export default {
     mixins: [tabbarBadge],
+    
+    onHide() {
+      this.$refs.swipe.closeAll();
+    },
+    
     data() {
       return {
-
-      }
+        swiperActionOptions: [
+          {
+            text: '删除',
+            style: {
+              backgroundColor: '#C00000'
+            }
+          }
+        ],
+      };
     },
     computed: {
       ...mapState('cart', ['cart']),
     },
     methods: {
-      ...mapMutations('cart', ['updateGoodsState', 'updateGoodsCount']),
+      ...mapMutations('cart', ['updateGoodsState', 'updateGoodsCount', 'deleteGoods']),
       
       handleRadioChange(goods) {
         this.updateGoodsState(goods);
@@ -35,6 +61,9 @@
       handleNumChange({ goods_id, goods_count }) {
         this.updateGoodsCount({ goods_id, goods_count });
       },
+      handleClickSwipeButton(goods) {
+        this.deleteGoods(goods);
+      }
     },
   }
 </script>

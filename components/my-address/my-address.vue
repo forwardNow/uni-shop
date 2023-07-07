@@ -7,17 +7,17 @@
     <view v-else class="address-info-box">
       <view class="row">
         <view class="row-left"> 
-          <view class="username">收货人：<text>escook</text></view> 
+          <view class="username">收货人：<text>{{ address.userName }}</text></view> 
         </view>
         <view class="row-right phone-box"> 
-          <view class="phone">电话：<text>138XXXX5555</text></view>
+          <view class="phone">电话：<text>{{ address.telNumber }}</text></view>
           <uni-icons type="arrowright" size="16"></uni-icons>
         </view>
       </view>
       
       <view class="row row2">
         <view class="row-left address">收货地址：</view>
-        <view class="row-right">河北省邯郸市肥乡区xxx 河北省邯郸市肥乡区xxx 河北 省邯郸市肥乡区xxx 河北省邯郸市肥乡区xxx </view>
+        <view class="row-right">{{ fullAddr }}</view>
       </view>
       
     </view>
@@ -38,7 +38,17 @@
     
     computed: {
       hasAddress() {
-        return Object.keys(this.address).length !== 0;
+        return this.address && this.address.provinceName;
+      },
+      
+      fullAddr() {
+        if (!this.hasAddress) {
+          return '';
+        }
+        
+        const { provinceName, cityName, countyName, detailInfo } = this.address;
+        
+        return provinceName + cityName + countyName + detailInfo;
       },
     },
     
@@ -103,6 +113,7 @@
     }
     .row2 {
       margin-top: 10px;
+      justify-content: flex-start;
     }
     
     .phone-box {

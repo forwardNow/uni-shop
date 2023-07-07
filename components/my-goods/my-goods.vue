@@ -71,7 +71,9 @@
   .goods-item {
     display: flex;
     padding: 12px 10px;
+    width: 750rpx;
     border-bottom: solid 1px #efefef;
+    box-sizing: border-box;
   }
 
   .goods-item-left {

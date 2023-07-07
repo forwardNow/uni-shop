@@ -28,31 +28,23 @@
 </template>
 
 <script>
+  import { mapState, mapGetters, mapMutations } from 'vuex';
+  
   export default {
     name:"my-address",
     data() {
       return {
-        address: {},
       };
     },
     
     computed: {
-      hasAddress() {
-        return this.address && this.address.provinceName;
-      },
-      
-      fullAddr() {
-        if (!this.hasAddress) {
-          return '';
-        }
-        
-        const { provinceName, cityName, countyName, detailInfo } = this.address;
-        
-        return provinceName + cityName + countyName + detailInfo;
-      },
+      ...mapState('user', ['address']),
+      ...mapGetters('user', ['hasAddress', 'fullAddr']),
     },
     
     methods: {
+      ...mapMutations('user', ['updateAddress']),
+      
       async handleClickChooseButton() {
         const [ error, result ] = await uni.chooseAddress().catch((e) => e);
         
@@ -77,7 +69,7 @@
           return;
         }
         
-        this.address = {
+        const address = {
           provinceName,
           cityName,
           countyName,
@@ -86,6 +78,8 @@
           telNumber,
           userName,
         };
+        
+        this.updateAddress(address);
       },
     },
     
@@ -101,7 +95,11 @@
     height: 90px;
   }
   .address-info-box {
-    padding: 10px 10px 0 10px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    
+    padding: 0 10px;
     height: 90px;
     
     font-size: 14px;

@@ -32,11 +32,9 @@
       async handleLoginBtn() {
         const [error, res] = await uni.getUserProfile({ desc: '用于完善会员资料' }).catch((e) => e);
         
-        if (error) {
-          if (error.errMsg === 'getUserProfile:fail auth deny') {
-            uni.$showToast('您取消了登录授权！');
-            return;
-          }
+        if (error && error.errMsg === 'getUserProfile:fail auth deny') {
+          uni.$showToast('您取消了登录授权！');
+          return;
         }
         
         const { userInfo } = res;

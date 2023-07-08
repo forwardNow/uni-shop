@@ -71,6 +71,14 @@ const cart = {
       this.commit('cart/saveToStorage');
     },
     
+    updateAllGoodsState(state, goods_state) {
+      state.cart.forEach((item) => {
+        item.goods_state = goods_state;
+      });
+      
+      this.commit('cart/saveToStorage');
+    },
+    
     saveToStorage(state) {
       uni.setStorageSync('cart', JSON.stringify(state.cart));
     },

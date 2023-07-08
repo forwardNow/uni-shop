@@ -6,8 +6,7 @@
     <button 
       type="primary" 
       class="btn-login" 
-      open-type="getUserInfo"
-      @getuserinfo="handleGetUserInfo"
+      @click="handleLoginBtn"
     >
       一键登录
     </button>
@@ -30,20 +29,42 @@
     methods: {
       ...mapMutations('user', ['updateUserInfo']),
       
-      handleGetUserInfo(e) {
-        const { 
-          detail: {
-            errMsg,
-            userInfo,
-          },
-        } = e;
+      async handleLoginBtn() {
+        const [error, res] = await uni.getUserProfile({ desc: '用于完善会员资料' }).catch((e) => e);
         
-        if (errMsg === 'getUserInfo:fail auth deny') {
-          uni.$showToast('您取消了登录授权！');
+        if (error) {
+          if (error.errMsg === 'getUserProfile:fail auth deny') {
+            uni.$showToast('您取消了登录授权！');
+            return;
+          }
+        }
+        
+        const { userInfo } = res;
+        
+        this.updateUserInfo(userInfo);
+        
+        this.login(res);
+      },
+      
+      async login(info) {
+        const [error, result] = await uni.login().catch((e) => e);
+        
+        if (error || result.errMsg !== 'login:ok') {
+          uni.$showToast('登录失败！');
           return;
         }
         
-        this.updateUserInfo(userInfo);
+        const data =  {
+          code: result.code,
+          encryptedData: info.encryptedData,
+          iv: info.iv,
+          rawData: info.rawData,
+          signature: info.signature
+        };
+        
+        const res = await uni.$http.post('/api/public/v1/users/wxlogin', data);
+        
+        console.log('res', res);
       },
     },
   }

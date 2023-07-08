@@ -60,9 +60,10 @@
           signature: info.signature
         };
         
+        // 此 API 登录失败
         const res = await uni.$http.post('/api/public/v1/users/wxlogin', data);
         
-        console.log('res', res);
+        
       },
     },
   }

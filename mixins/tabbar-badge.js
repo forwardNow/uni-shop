@@ -17,9 +17,19 @@ export default {
   
   methods: {
     setBadge() {
+      if (!this.total) {
+        uni.removeTabBarBadge({
+          index: 2
+        });
+        
+        return;
+      }
+      
+      const text = String(this.total);
+      
       uni.setTabBarBadge({
         index: 2, // 索引
-        text: String(this.total) // 注意：text 的值必须是字符串，不能是数字
+        text,     // 注意：text 的值必须是字符串，不能是数字
       });
     }
   }

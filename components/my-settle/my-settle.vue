@@ -2,7 +2,7 @@
   <view class="settle-container">
     
     <label class="radio-box">
-      <radio :checked="true" color="#C00000" ></radio>
+      <radio :checked="isSelectAll" color="#C00000" ></radio>
       <text>全选</text>
     </label>
     
@@ -10,18 +10,27 @@
       合计：<text class="amount">￥123.45</text>
     </view>
     
-    <view class="settle-btn">结算(0)</view>
+    <view class="settle-btn">结算({{ checkedCount }})</view>
   </view>
 </template>
 
 <script>
+  import { mapGetters } from 'vuex';
+  
   export default {
     name:"my-settle",
     data() {
       return {
         
       };
-    }
+    },
+    computed: {
+      ...mapGetters('cart', ['total', 'checkedCount']),
+      
+      isSelectAll() {
+        return this.total === this.checkedCount;
+      }
+    },
   }
 </script>
 

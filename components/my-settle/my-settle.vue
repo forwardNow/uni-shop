@@ -7,7 +7,7 @@
     </label>
     
     <view class="amount-box">
-      合计：<text class="amount">￥123.45</text>
+      合计：<text class="amount">￥{{ checkedGoodsAmount }}</text>
     </view>
     
     <view class="settle-btn">结算({{ checkedCount }})</view>
@@ -25,7 +25,7 @@
       };
     },
     computed: {
-      ...mapGetters('cart', ['total', 'checkedCount']),
+      ...mapGetters('cart', ['total', 'checkedCount', 'checkedGoodsAmount']),
       
       isSelectAll() {
         return this.total === this.checkedCount;

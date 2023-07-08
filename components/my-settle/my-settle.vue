@@ -1,8 +1,8 @@
 <template>
   <view class="settle-container">
     
-    <label class="radio-box">
-      <radio :checked="isSelectAll" color="#C00000" ></radio>
+    <label class="radio-box" @click="handleClickRadio">
+      <radio :checked="isSelectAll" color="#C00000"></radio>
       <text>全选</text>
     </label>
     
@@ -15,7 +15,7 @@
 </template>
 
 <script>
-  import { mapGetters } from 'vuex';
+  import { mapGetters, mapMutations } from 'vuex';
   
   export default {
     name:"my-settle",
@@ -29,7 +29,15 @@
       
       isSelectAll() {
         return this.total === this.checkedCount;
-      }
+      },
+    },
+    
+    methods: {
+      ...mapMutations('cart', ['updateAllGoodsState']),
+      
+      handleClickRadio() {
+        this.updateAllGoodsState(!this.isSelectAll);
+      },
     },
   }
 </script>

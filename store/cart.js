@@ -14,7 +14,14 @@ const cart = {
       return state.cart
         .filter((item) => item.goods_state)
         .reduce((sum, item) => sum += item.goods_count, 0);
-    }
+    },
+    
+    checkedGoodsAmount(state) {
+      return state.cart
+        .filter((item) => item.goods_state)
+        .reduce((sum, item) => sum += item.goods_count * item.goods_price, 0)
+        .toFixed(2);
+    },
   },
   
   mutations: {

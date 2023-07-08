@@ -54,13 +54,11 @@
       },
       
       async chooseAddress() {
-        this.reAuth()
-        return;
         const [ error, result ] = await uni.chooseAddress().catch((e) => e);
         
         if (error) {
           console.error(error);
-          
+          // this.reAuth()
           return;
         }
         

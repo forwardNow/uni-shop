@@ -1,5 +1,7 @@
 import { mapGetters } from 'vuex';
 
+const CART_INDEX = 2;
+
 export default {
   onShow() {
     this.setBadge();
@@ -10,27 +12,25 @@ export default {
   },
   
   watch: {
-    total() {
+    total(newTotal) {
+      if (!newTotal) {
+        this.removeBadge();
+        return;
+      }
+      
       this.setBadge();
     },
   },
   
   methods: {
     setBadge() {
-      if (!this.total) {
-        uni.removeTabBarBadge({
-          index: 2
-        });
-        
-        return;
-      }
-      
       const text = String(this.total);
       
-      uni.setTabBarBadge({
-        index: 2, // 索引
-        text,     // 注意：text 的值必须是字符串，不能是数字
-      });
-    }
+      uni.setTabBarBadge({ index: CART_INDEX, text });
+    },
+    
+    removeBadge() {
+      uni.removeTabBarBadge({ index: CART_INDEX });
+    },
   }
 }

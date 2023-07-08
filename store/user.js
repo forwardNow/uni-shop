@@ -13,6 +13,7 @@ export default {
   
   state: {
     address: getAddress(),
+    token: '',
   },
   
   getters: {
@@ -29,6 +30,10 @@ export default {
       
       return provinceName + cityName + countyName + detailInfo;
     },
+    
+    isLogin(state) {
+      return Boolean(state.token);
+    }
   },
   
   mutations: {

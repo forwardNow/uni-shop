@@ -1,4 +1,5 @@
 const ADDRESS_KEY = 'address';
+const USER_INFO_KEY = 'userInfo';
 
 function getAddress() {
   const addressStr = uni.getStorageSync(ADDRESS_KEY) || '{}';
@@ -8,12 +9,22 @@ function getAddress() {
   return address;
 }
 
+
+function getUserInfo() {
+  const userInfoStr = uni.getStorageSync(USER_INFO_KEY) || '{}';
+  
+  const userInfo = JSON.parse(userInfoStr);
+  
+  return userInfo;
+}
+
 export default {
   namespaced: true,
   
   state: {
     address: getAddress(),
     token: '',
+    userInfo: getUserInfo(),
   },
   
   getters: {
@@ -43,8 +54,18 @@ export default {
       this.commit('user/saveAddressToStorage');
     },
     
+    updateUserInfo(state, userInfo) {
+      state.userInfo = userInfo;
+      
+      this.commit('user/saveUserInfoToStorage');
+    },
+    
     saveAddressToStorage(state) {
       uni.setStorageSync(ADDRESS_KEY, JSON.stringify(state.address));
     },
+    
+    saveUserInfoToStorage(state) {
+      uni.setStorageSync(USER_INFO_KEY, JSON.stringify(state.userInfo));
+    }
   }
 }

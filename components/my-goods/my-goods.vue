@@ -11,7 +11,7 @@
       <view class="goods-name">{{ goods.goods_name }}</view>
 
       <view class="goods-info-box">
-        <text class="goods-price">{{ goods.goods_price ? `￥${goods.goods_price}` : '' }}</text>
+        <text class="goods-price">{{ formatPrice(goods.goods_price) }}</text>
         <uni-number-box v-if="numBox" :min="1" :value="goods.goods_count" @change="handleNumBoxChange"></uni-number-box>
       </view>
 
@@ -43,6 +43,13 @@
       };
     },
     methods: {
+      formatPrice(price) {
+        if (!price) {
+          return '';
+        }
+        
+        return `￥${ Number(price).toFixed(2) }`
+      },
       handleClickGoodsItem(goods) {
         this.$emit('click', goods);
       },

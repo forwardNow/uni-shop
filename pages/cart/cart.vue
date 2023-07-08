@@ -1,5 +1,5 @@
 <template>
-  <view>
+  <view class="cart-container">
     
     <my-address />
     
@@ -25,6 +25,7 @@
       </template>
     </uni-swipe-action>
     
+    <my-settle />
   </view>
 </template>
 
@@ -72,6 +73,9 @@
 </script>
 
 <style lang="scss">
+  .cart-container {
+    padding-bottom: 50px;
+  }
   .cart-title {
     height: 40px;
     display: flex;

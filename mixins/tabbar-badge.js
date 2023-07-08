@@ -9,6 +9,12 @@ export default {
     ...mapGetters('cart', ['total']),
   },
   
+  watch: {
+    total() {
+      this.setBadge();
+    },
+  },
+  
   methods: {
     setBadge() {
       uni.setTabBarBadge({

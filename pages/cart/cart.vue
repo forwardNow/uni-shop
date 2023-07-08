@@ -1,5 +1,5 @@
 <template>
-  <view class="cart-container">
+  <view v-if="total"  class="cart-container">
     
     <my-address />
     
@@ -27,17 +27,28 @@
     
     <my-settle />
   </view>
+  
+  <view v-else class="empty-cart">
+    <image class="empty-img" src="/static/cart_empty@2x.png"></image>
+    <text class="empty-tips">空空如也~</text>
+  </view>
 </template>
 
 <script>
-  import { mapState, mapMutations } from 'vuex'
+  import { mapState, mapMutations, mapGetters } from 'vuex'
   import tabbarBadge from '@/mixins/tabbar-badge';
 
   export default {
     mixins: [tabbarBadge],
     
     onHide() {
-      this.$refs.swipe.closeAll();
+      const { swipe } = this.$refs;
+      
+      if (!swipe) {
+        return;
+      }
+      
+      swipe.closeAll();
     },
     
     data() {
@@ -54,6 +65,7 @@
     },
     computed: {
       ...mapState('cart', ['cart']),
+      ...mapGetters('cart', ['total']),
     },
     methods: {
       ...mapMutations('cart', ['updateGoodsState', 'updateGoodsCount', 'deleteGoods']),
@@ -86,6 +98,24 @@
 
     .cart-title-text {
       margin-left: 10px;
+    }
+  }
+  
+  .empty-cart {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    
+    padding-top: 120px;
+    
+    .empty-img {
+      width: 90px;
+      height: 90px;
+    }
+    .empty-tips {
+      margin-top: 12px;
+      font-size: 16px;
+      color: #666;
     }
   }
 </style>

@@ -11,7 +11,7 @@
         </view>
         <view class="row-right phone-box"> 
           <view class="phone">电话：<text>{{ address.telNumber }}</text></view>
-          <uni-icons type="arrowright" size="16"></uni-icons>
+          <uni-icons type="arrowright" size="16" @click="handleClickArrowRightIcon"></uni-icons>
         </view>
       </view>
       
@@ -45,11 +45,22 @@
     methods: {
       ...mapMutations('user', ['updateAddress']),
       
-      async handleClickChooseButton() {
+      handleClickChooseButton() {
+        this.chooseAddress();
+      },
+    
+      handleClickArrowRightIcon() {
+        this.chooseAddress();
+      },
+      
+      async chooseAddress() {
+        this.reAuth()
+        return;
         const [ error, result ] = await uni.chooseAddress().catch((e) => e);
         
         if (error) {
           console.error(error);
+          
           return;
         }
         
@@ -81,7 +92,38 @@
         
         this.updateAddress(address);
       },
+      
+      async reAuth() {
+        const [err, confirmResult] = await uni.showModal({
+          content: '检测到您没打开地址权限，是否去设置打开？',
+          confirmText: "确认",
+          cancelText: "取消",
+        })
+      
+        if (err) {
+          return
+        }
+      
+        if (confirmResult.cancel) {
+          return uni.$showToast('您取消了地址授权！')
+        }
+      
+        uni.openSetting({
+          success: (settingResult) => {
+            const isAuthAddress = settingResult.authSetting['scope.address'];
+      
+            if (!isAuthAddress) {
+              uni.$showToast('您取消了地址授权！');
+              return;
+            }
+      
+            uni.$showToast('授权成功！请选择地址');
+          },
+        });
+      }
+    
     },
+    
     
   }
 </script>

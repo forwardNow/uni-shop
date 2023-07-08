@@ -10,7 +10,7 @@
       合计：<text class="amount">￥{{ checkedGoodsAmount }}</text>
     </view>
     
-    <view class="settle-btn">结算({{ checkedCount }})</view>
+    <view class="settle-btn" @click="handleClickSettleBtn">结算({{ checkedCount }})</view>
   </view>
 </template>
 
@@ -26,9 +26,14 @@
     },
     computed: {
       ...mapGetters('cart', ['total', 'checkedCount', 'checkedGoodsAmount']),
+      ...mapGetters('user', ['hasAddress', 'isLogin']),
       
       isSelectAll() {
         return this.total === this.checkedCount;
+      },
+      
+      isCheckedGoods() {
+        return this.checkedCount > 0;
       },
     },
     
@@ -37,6 +42,22 @@
       
       handleClickRadio() {
         this.updateAllGoodsState(!this.isSelectAll);
+      },
+      
+      handleClickSettleBtn() {
+        if (!this.isCheckedGoods) {
+          uni.$showToast('请选择要结算的商品！');
+          return;
+        }
+        
+        if (!this.hasAddress) {
+          uni.$showToast('请选择收货地址！');
+          return;
+        }
+        
+        if (!this.isLogin) {
+          uni.$showToast('请先登录！');
+        }
       },
     },
   }

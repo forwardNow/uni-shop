@@ -7,13 +7,13 @@ const cart = {
   
   getters: {
     total(state) {
-      let count = 0;
-      
-      state.cart.forEach((item) => {
-        count += item.goods_count;
-      });
-      
-      return count;
+      return state.cart.reduce((sum, item) => sum += item.goods_count, 0);
+    },
+    
+    checkedCount(state) {
+      return state.cart
+        .filter((item) => item.goods_state)
+        .reduce((sum, item) => sum += item.goods_count, 0);
     }
   },
   

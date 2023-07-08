@@ -3,7 +3,14 @@
     
     <uni-icons type="contact-filled" size="100" color="#AFAFAF">></uni-icons>
     
-    <button type="primary" class="btn-login">一键登录</button>
+    <button 
+      type="primary" 
+      class="btn-login" 
+      open-type="getUserInfo"
+      @getuserinfo="handleGetUserInfo"
+    >
+      一键登录
+    </button>
     
     <view class="tips-text">登录后尽享更多权益</view>
     
@@ -11,13 +18,34 @@
 </template>
 
 <script>
+  import { mapMutations } from 'vuex';
+  
   export default {
     name:"my-login",
     data() {
       return {
         
       };
-    }
+    },
+    methods: {
+      ...mapMutations('user', ['updateUserInfo']),
+      
+      handleGetUserInfo(e) {
+        const { 
+          detail: {
+            errMsg,
+            userInfo,
+          },
+        } = e;
+        
+        if (errMsg === 'getUserInfo:fail auth deny') {
+          uni.$showToast('您取消了登录授权！');
+          return;
+        }
+        
+        this.updateUserInfo(userInfo);
+      },
+    },
   }
 </script>
 

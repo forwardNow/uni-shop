@@ -27,7 +27,7 @@
       };
     },
     methods: {
-      ...mapMutations('user', ['updateUserInfo']),
+      ...mapMutations('user', ['updateUserInfo', 'updateToken']),
       
       async handleLoginBtn() {
         const [error, res] = await uni.getUserProfile({ desc: '用于完善会员资料' }).catch((e) => e);
@@ -63,7 +63,7 @@
         // 此 API 登录失败
         const res = await uni.$http.post('/api/public/v1/users/wxlogin', data);
         
-        
+        this.updateToken('test---token');
       },
     },
   }

@@ -62,7 +62,7 @@
           <text>联系客服</text>
           <uni-icons type="arrowright" size="15"></uni-icons>
         </view>
-        <view class="list-item">
+        <view class="list-item" @click="logout">
           <text>退出登录</text>
           <uni-icons type="arrowright" size="15"></uni-icons>
         </view>
@@ -75,7 +75,8 @@
 
 <script>
   import {
-    mapState
+    mapState,
+    mapMutations,
   } from 'vuex';
 
   export default {
@@ -88,6 +89,25 @@
     computed: {
       ...mapState('user', ['userInfo']),
     },
+
+    methods: {
+      ...mapMutations('user', ['updateAddress', 'updateUserInfo', 'updateToken', ]),
+
+      async logout() {
+        const [err, result] = await uni.showModal({
+          title: '提示',
+          content: '确认退出登录吗？'
+        }).catch(err => err)
+        
+        if (err || !(result && result.confirm)) {
+          return;
+        }
+        
+        this.updateUserInfo({})
+        this.updateToken('')
+        this.updateAddress({})
+      },
+    }
   }
 </script>
 

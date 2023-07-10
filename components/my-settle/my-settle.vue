@@ -42,6 +42,7 @@
 
     methods: {
       ...mapMutations('cart', ['updateAllGoodsState']),
+      ...mapMutations('user', ['updateRedirectInfo']),
 
       handleClickRadio() {
         this.updateAllGoodsState(!this.isSelectAll);
@@ -71,9 +72,18 @@
 
           if (delaySecondes <= 0) {
             clearInterval(this.timer);
-            uni.switchTab({
-              url: '/pages/my/my'
-            })
+            
+            uni.switchTab({ 
+              url: '/pages/my/my',
+              success: () => {
+                this.updateRedirectInfo({
+                  openType: 'switchTab',
+                  from: '/pages/cart/cart',
+                });
+              }
+            });
+            
+            
             return;
           }
 

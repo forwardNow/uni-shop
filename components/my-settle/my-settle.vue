@@ -16,6 +16,7 @@
 
 <script>
   import {
+    mapState,
     mapGetters,
     mapMutations
   } from 'vuex';
@@ -28,6 +29,8 @@
       };
     },
     computed: {
+      ...mapState('cart', ['cart']),
+      ...mapState('user', ['address']),
       ...mapGetters('cart', ['total', 'checkedCount', 'checkedGoodsAmount']),
       ...mapGetters('user', ['hasAddress', 'isLogin']),
 
@@ -61,7 +64,10 @@
 
         if (!this.isLogin) {
           this.delayNavToLogin(3);
+          return;
         }
+
+        this.payOrder();
       },
 
       delayNavToLogin(delaySecondes) {
@@ -72,8 +78,8 @@
 
           if (delaySecondes <= 0) {
             clearInterval(this.timer);
-            
-            uni.switchTab({ 
+
+            uni.switchTab({
               url: '/pages/my/my',
               success: () => {
                 this.updateRedirectInfo({
@@ -82,14 +88,35 @@
                 });
               }
             });
-            
-            
+
+
             return;
           }
 
           this.showTips(delaySecondes)
         }, 1000)
       },
+
+      async payOrder() {
+        const goods = this.cart
+          .filter((item) => item.goods_state)
+          .map((item) => ({
+            goods_id: item.goods_id,
+            goods_number: item.goods_count,
+            goods_price: item.goods_price,
+          }));
+          
+        const orderInfo = {
+          order_price: 0.01,
+          consignee_addr: this.address,
+          goods,
+        };
+        
+        const res = await uni.$http.post('/api/public/v1/my/orders/create', orderInfo);
+        
+        console.log(res);
+      },
+
 
       showTips(num) {
         uni.showToast({

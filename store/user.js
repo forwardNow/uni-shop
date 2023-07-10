@@ -30,6 +30,7 @@ export default {
     address: getAddress(),
     token: getToken(),
     userInfo: getUserInfo(),
+    redirectInfo: null,
   },
   
   getters: {
@@ -68,6 +69,10 @@ export default {
     updateToken(state, token) {
       state.token = token;
       this.commit('user/saveTokenToStorage');
+    },
+    
+    updateRedirectInfo(state, redirectInfo) {
+      state.redirectInfo = redirectInfo;
     },
     
     saveAddressToStorage(state) {
